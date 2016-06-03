@@ -67,14 +67,22 @@ realgud-loc-pat struct")
        :line-group 4))
 
 ;; Regular expression that describes a debugger "delete" (breakpoint)
-;; response.
+;; query or response.
 ;; For example:
+;;   delete 10 12
 ;;   Deleted breakpoint 1
 ;;   Deleted breakpoints 1 2 3 4
 (setf (gethash "brkpt-del" realgud:gdb-pat-hash)
-      (make-realgud-loc-pat
-       :regexp "^Deleted breakpoints? \\(\\([0-9]+ *\\)+\\)\n"
-       :num 1))
+      `(,(make-realgud-loc-pat
+          :regexp (concat "^delete\\s-+"
+                          realgud:regexp-captured-nums
+                          "\n")
+          :num 1)
+        ,(make-realgud-loc-pat
+          :regexp (concat "^Deleted breakpoints?\\s-+"
+                          realgud:regexp-captured-nums
+                          "\n")
+          :num 1)))
 
 (defconst realgud:gdb-frame-start-regexp
   "\\(?:^\\|\n\\)")
