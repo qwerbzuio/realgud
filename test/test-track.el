@@ -15,8 +15,7 @@
 (declare-function realgud-loc-line-number      'realgud-loc)
 (declare-function realgud:track-from-region    'realgud-track)
 (declare-function realgud-track-loc            'realgud-track)
-(declare-function realgud-track-loc-remaining  'realgud-track)
-(declare-function realgud-track-selected-frame 'realgud-track)
+(declare-function realgud-track-selected-frames 'realgud-track)
 (declare-function realgud-track-termination?   'realgud-track)
 
 (test-simple-start)
@@ -43,36 +42,33 @@
 			      test-filename line-number))
 (lexical-let ((loc (realgud-track-loc debugger-output nil)))
   (assert-t (realgud-loc-p loc)   "loc extracted")
-  (assert-equal "(trepan):\n"
-		(realgud-track-loc-remaining debugger-output)
-		"loc-remaining")
   (assert-equal test-filename (realgud-loc-filename loc)
 		"loc filename extracted")
   (assert-equal line-number (realgud-loc-line-number loc)
 		"loc line-number extracted")
   )
 
-(note "realgud-track-selected-frame")
+(note "realgud-track-selected-frames")
 (setq debugger-output "up
 --> #1 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9
    (/usr/local/bin/irb:9 @11)
 require irb'
 ")
-(assert-equal 1 (realgud-track-selected-frame debugger-output))
+(assert-equal 1 (realgud-track-selected-frames debugger-output))
 
 (setq debugger-output "
 --> #0 TOP Object#<top /usr/local/bin/irb> in file /usr/local/bin/irb at line 9
    (/usr/local/bin/irb:9 @11)
 require irb'
 ")
-(assert-equal 0 (realgud-track-selected-frame debugger-output))
+(assert-equal 0 (realgud-track-selected-frames debugger-output))
 
 (setq debugger-output "
 <- (<internal:lib/rubygems/custom_require>:38 remapped /usr/local/lib/ruby/gems/1.9.1/gems/trepanning-0.1.3.dev/data/custom_require.rb:38 @16)
 R=> false
 end
 ")
-(assert-nil (realgud-track-selected-frame debugger-output))
+(assert-nil (realgud-track-selected-frames debugger-output))
 
 
 (note "realgud-track-termination?")

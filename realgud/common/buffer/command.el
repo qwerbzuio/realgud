@@ -336,14 +336,18 @@ values set in the debugger's init.el."
   )
 
 (defun realgud-cmdbuf-pat(key)
-  "Extract regexp stored under KEY in a realgud-cmdbuf via realgud-cmdbuf-info"
-  (if (realgud-cmdbuf?)
-      (let*
-	  ((debugger-name (realgud-cmdbuf-debugger-name))
-	   (regexp-hash (gethash debugger-name realgud-pat-hash))
-	   (loc-pat (gethash key regexp-hash)))
-	loc-pat)
-    nil))
+  "Extract value stored under KEY in a realgud-cmdbuf via realgud-cmdbuf-info"
+  (when (realgud-cmdbuf?)
+    (let* ((debugger-name (realgud-cmdbuf-debugger-name))
+           (regexp-hash (gethash debugger-name realgud-pat-hash)))
+      (gethash key regexp-hash))))
+
+(defun realgud-cmdbuf-pats-list(key)
+  "Like (realgud-cmdbuf-pat KEY), but always return a list."
+  (let ((values (realgud-cmdbuf-pat key)))
+    (if (listp values)
+        values
+      (list values))))
 
 (defun realgud-cmdbuf-loc-hist(cmd-buf)
   "Return the history ring of locations that a debugger
