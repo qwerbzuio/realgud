@@ -127,9 +127,13 @@ fringe and marginal icons.
 				       nil))
 	 )
     (if cmd-buf
+	(add-hook 'completion-at-point-functions
+		  'realgud:gdb-completion-at-point nil t)
 	(let ((process (get-buffer-process cmd-buf)))
 	  (if (and process (eq 'run (process-status process)))
 	      (with-current-buffer cmd-buf
+		(add-hook 'completion-at-point-functions
+			  'realgud:gdb-completion-at-point nil t)
 		(realgud-command "set annotate 1" nil nil nil)
 		)))
       )
