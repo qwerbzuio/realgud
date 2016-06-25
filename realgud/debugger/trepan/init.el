@@ -1,4 +1,21 @@
-;;; Copyright (C) 2010, 2014-2015 Rocky Bernstein <rocky@gnu.org>
+;; Copyright (C) 2010, 2014-2016 Free Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;; Ruby Trepanning debugger
 (eval-when-compile (require 'cl))
 
 (require 'load-relative)
@@ -48,12 +65,12 @@ realgud-loc-pat struct")
       realgud-ruby-YARV-syntax-error-pat)
 
 ;; Regular expression that describes a Ruby YARV backtrace line.
-;; For example: 
+;; For example:
 ;; 	from /ruby/gems/2.2.0/gems/fog-1.32.0/lib/fog/digitalocean.rb:1:in `<top (required)>'
 ;; 	from /Users/fog-1.32.0/lib/fog.rb:28:in `require'
 (setf (gethash "lang-backtrace" realgud:trepan-pat-hash)
       realgud-ruby-backtrace-loc-pat)
-   
+
 ;;  Regular expression that describes a ruby $! backtrace
 (setf (gethash "dollar-bang-backtrace" realgud:trepan-pat-hash)
       realgud-ruby-dollar-bang-loc-pat)
@@ -200,6 +217,12 @@ backtrace listing.")
 ;; 	))
 
 (setf (gethash realgud:trepan-debugger-name realgud-pat-hash) realgud:trepan-pat-hash)
+
+;; String template that gives debugger completions in commands.
+;; The default is the gdb value: "complete %s", but it doesn't
+;; hurt to be explicit.
+(setf (gethash "complete-cmd-template" realgud:trepan-pat-hash)
+      "complete %s")
 
 (defvar realgud:trepan-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'quit' and the value is

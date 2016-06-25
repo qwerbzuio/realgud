@@ -23,6 +23,7 @@
 (require-relative-list '("core" "track" "utils") "realgud-")
 (require-relative-list '("buffer/command") "realgud-buffer-")
 
+(declare-function realgud-parse-command-arg 'realgud-core)
 (declare-function realgud-cmdbuf-info-in-debugger?=   'realgud-buffer-command)
 (declare-function realgud-cmdbuf-info-cmd-args=       'realgud-buffer-command)
 (declare-function realgud:track-set-debugger          'realgud-track)
@@ -144,8 +145,14 @@ marginal icons is reset."
 	      (switch-to-buffer cmd-buf)
 	      (when realgud-cmdbuf-info
 		(let* ((info realgud-cmdbuf-info)
+		       (regexp-hash (realgud-sget 'cmdbuf-info 'regexp-hash))
+		       (complete-cmd-template (gethash "complete-cmd-template"
+						       regexp-hash))
 		       (cmd-args (realgud-cmdbuf-info-cmd-args info))
 		       (cmd-str  (mapconcat 'identity  cmd-args " ")))
+		  (when complete-cmd-template
+		    (add-hook 'completion-at-point-functions
+			  'realgud:completion-at-point nil t))
 		  (set minibuffer-history
 		       (list-utils-uniq (cons cmd-str
 					      (eval minibuffer-history)))

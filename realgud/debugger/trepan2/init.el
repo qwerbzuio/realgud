@@ -1,5 +1,21 @@
-;;; Copyright (C) 2010-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
-;;; trepan2: Python 2.5 but less than 3K
+;; Copyright (C) 2010-2012, 2014-2015 Software Foundation, Inc
+
+;; Author: Rocky Bernstein <rocky@gnu.org>
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;; trepan2: Python 2.5 - 2.7; for 3.0+ see trepan3k
 
 (eval-when-compile (require 'cl))
 
@@ -85,6 +101,12 @@ realgud-loc-pat struct")
       realgud:python-debugger-font-lock-keywords)
 
 (setf (gethash "trepan2" realgud-pat-hash) realgud:trepan2-pat-hash)
+
+;; String template that gives debugger completions in commands.
+;; The default is the gdb value: "complete %s", but it doesn't
+;; hurt to be explicit.
+(setf (gethash "complete-cmd-template" realgud:trepan2-pat-hash)
+      "complete %s")
 
 (defvar realgud:trepan2-command-hash (make-hash-table :test 'equal)
   "Hash key is command name like 'shell' and the value is

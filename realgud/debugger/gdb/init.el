@@ -118,6 +118,10 @@ realgud-loc-pat struct")
 	 (1 realgud-backtrace-number-face))
 	))
 
+;; String template that gives debugger completions in commands.
+(setf (gethash "complete-cmd-template" realgud:gdb-pat-hash)
+      "complete %s")
+
 (setf (gethash "gdb" realgud-pat-hash) realgud:gdb-pat-hash)
 
 ;;  Prefix used in variable names (e.g. short-key-mode-map) for

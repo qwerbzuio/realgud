@@ -14,7 +14,6 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-;;; Copyright (C) 2014-2015 Rocky Bernstein <rocky@gnu.org>
 
 (eval-when-compile (require 'cl))
 
@@ -203,47 +202,6 @@ breakpoints, etc.)."
         (when w
           (delete-window w)))
       (kill-buffer buffer))))
-
-(defconst realgud:gdb-complete-script "complete %s")
-
-(defun realgud:gdb-backend-complete ()
-  "Send a command to the ipdb buffer and parse the output.
-
-The idea here is to rely on the
-`comint-redirect-send-command-to-process' function to send a
-gdb command `realgud:gdb-complete-script' that will return
-the completions for the given input."
-  (interactive)
-  (let* ((buffer (current-buffer))
-	 (cmdbuf (realgud-get-cmdbuf))
-	 (process (get-buffer-process (current-buffer)))
-	 (start-pos (save-excursion (comint-goto-process-mark) (point)))
-	 (end-pos (point))
-	 (len (- end-pos start-pos)))
-
-    ;; get the input string
-    (when (> end-pos start-pos)
-      (let* ((input-str (buffer-substring-no-properties start-pos end-pos))
-             (command-str (format realgud:gdb-complete-script input-str))
-             (output-str (with-temp-buffer
-                           (comint-redirect-send-command-to-process
-                            command-str (current-buffer) process nil t)
-                           ;; Wait for the process to complete
-                           (with-current-buffer (process-buffer process)
-                             (while (null comint-redirect-completed)
-                               (accept-process-output nil 0 5))) ;; wait 5ms
-                           (buffer-substring (point-min) (1- (point-max)))))
-             (output-values (split-string output-str "\n"))
-             (prefix (car output-values)))
-        (list (- end-pos len) end-pos (cdr output-values))))))
-
-(defun realgud:gdb-completion-at-point ()
-  (let ((gdb (realgud:gdb-backend-complete)))
-    (when gdb
-      (list (nth 0 gdb)
-            (nth 1 gdb)
-            (nth 2 gdb)
-            :exclusive 'yes))))
 
 ;; (defun gdb-reset-keymaps()
 ;;   "This unbinds the special debugger keys of the source buffers."

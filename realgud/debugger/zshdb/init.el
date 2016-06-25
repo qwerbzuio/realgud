@@ -93,6 +93,10 @@ realgud-loc-pat struct")
   "Hash key is command name like 'quit' and the value is
   the zshdb command to use, like 'quit!'")
 
+;; ;; String template that gives debugger completions in commands.
+;; (setf (gethash "complete-cmd-template" realgud:zshdb-pat-hash)
+;;       "complete %s")
+
 (setf (gethash "zshdb"  realgud-command-hash) realgud:zshdb-command-hash)
 
 (setf (gethash "clear"  realgud:zshdb-command-hash) "clear %l")

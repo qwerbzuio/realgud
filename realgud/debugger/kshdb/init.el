@@ -100,6 +100,10 @@ realgud-loc-pat struct")
 	;;  (0 trepan-frames-current-frame-face append))
 	))
 
+;; String template that gives debugger completions in commands.
+(setf (gethash "complete-cmd-template" realgud:kshdb-pat-hash)
+      "complete %s")
+
 (setf (gethash "kshdb" realgud-pat-hash) realgud:kshdb-pat-hash)
 
 (defvar realgud:kshdb-command-hash (make-hash-table :test 'equal)

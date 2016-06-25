@@ -259,6 +259,12 @@ backtrace listing.")
 
 (setf (gethash realgud:trepanpl-debugger-name realgud-pat-hash) realgud:trepanpl-pat-hash)
 
+;; String template that gives debugger completions in commands.
+;; The default is the gdb value: "complete %s", but it doesn't
+;; hurt to be explicit.
+;; (setf (gethash "complete-cmd-template" realgud:trepanpl-pat-hash)
+;;       "complete %s")
+
 ;;  Prefix used in variable names (e.g. short-key-mode-map) for
 ;; this debugger
 

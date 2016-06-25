@@ -89,6 +89,10 @@ realgud-loc-pat struct")
 (setf (gethash "font-lock-keywords" realgud:bashdb-pat-hash)
       realgud:POSIX-debugger-font-lock-keywords)
 
+;; String template that gives debugger completions in commands.
+(setf (gethash "complete-cmd-template" realgud:bashdb-pat-hash)
+      "complete %s")
+
 (setf (gethash "bashdb" realgud-pat-hash) realgud:bashdb-pat-hash)
 
 (defvar realgud:bashdb-command-hash (make-hash-table :test 'equal)
