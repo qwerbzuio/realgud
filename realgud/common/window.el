@@ -27,12 +27,12 @@
 (defun realgud-window-update-position (buffer marker)
   "Update BUFFER to position specified with MARKER.
 We assume MARKER points inside BUFFER"
-  (with-current-buffer buffer
-    (goto-char marker)
-    (let ((window (get-buffer-window buffer)))
-      (if window (set-window-point window marker))
-      )))
-
+  (if marker
+      (with-current-buffer buffer
+	(goto-char marker)
+	(let ((window (get-buffer-window buffer)))
+	  (if window (set-window-point window marker))
+	  ))))
 
 (defun realgud-window-src ( &optional opt-buffer )
   "Make sure the source buffer is displayed in a window

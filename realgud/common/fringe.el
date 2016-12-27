@@ -131,7 +131,7 @@ for example to indicate a debugger position."
 		;; We need to ignore field boundaries, so we use
 		;; forward-line rather than beginning-of-line.
 		(forward-line 0)
-		(setq overlay-arrow-position (point-marker))
+		(setq overlay-arrow (point-marker))
 		(goto-char position)
 		)))))))
 
