@@ -99,6 +99,16 @@ if we don't find anything."
 	    (realgud-get-srcbuf-from-cmdbuf cmdbuf)
 	  nil)))))
 
+(defun realgud-get-only-cmdbuf ()
+  "Return cmdbuf if there's only one available. Otherwise, return nil."
+  (let ((comint-buffers (-filter 
+                         (lambda (b)
+                           (with-current-buffer b
+                             (eq major-mode 'comint-mode)))
+                         (buffer-list))))
+    (when (eq 1 (length comint-buffers))
+      (car comint-buffers))))
+
 (defun realgud-get-cmdbuf( &optional opt-buffer)
   "Return the command buffer associated with OPT-BUFFER
 or `current-buffer' if that is omitted. nil is returned
@@ -114,8 +124,8 @@ if we don't find anything."
 	(realgud-get-cmdbuf-from-srcbuf buffer))
        ;; Perhaps buffer is a backtrace buffer?
        ((realgud-backtrace? buffer)
-	(realgud-get-cmdbuf-from-backtrace buffer))
-       (t nil)))))
+	    (realgud-get-cmdbuf-from-backtrace buffer))
+       (t (realgud-get-only-cmdbuf))))))
 
 (defun realgud-get-backtrace-buf( &optional opt-buffer)
   "Return the backtrace buffer associated with
